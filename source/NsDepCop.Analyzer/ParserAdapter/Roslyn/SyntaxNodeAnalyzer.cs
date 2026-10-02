@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Codartis.NsDepCop.Analysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,6 +16,11 @@ namespace Codartis.NsDepCop.ParserAdapter.Roslyn
         /// <summary>
         /// The list of those type kinds that can occur as a declaration.
         /// </summary>
+        /// <summary>
+        /// The display strings of the namespaces met so far. The table does not keep the symbols, and so their compilations, alive.
+        /// </summary>
+        private static readonly ConditionalWeakTable<INamespaceSymbol, string> NamespaceNames = new();
+
         private static readonly List<TypeKind> DeclarationTypeKinds = new()
         {
             TypeKind.Class,
@@ -132,9 +138,18 @@ namespace Codartis.NsDepCop.ParserAdapter.Roslyn
         private static TypeDependency CreateTypeDependency(ITypeSymbol fromType, ITypeSymbol toType, SyntaxNode node)
         {
             return new TypeDependency(
-                fromType.ContainingNamespace.ToDisplayString(), fromType.MetadataName,
-                toType.ContainingNamespace.ToDisplayString(), toType.MetadataName,
+                GetNamespaceName(fromType.ContainingNamespace), fromType.MetadataName,
+                GetNamespaceName(toType.ContainingNamespace), toType.MetadataName,
                 GetSourceSegment(node));
+        }
+
+        /// <summary>
+        /// Returns the display string of a namespace, formatting it only once per namespace symbol.
+        /// Every analyzed syntax node needs the namespace names of the types on both ends of its dependencies.
+        /// </summary>
+        private static string GetNamespaceName(INamespaceSymbol namespaceSymbol)
+        {
+            return NamespaceNames.GetValue(namespaceSymbol, static i => i.ToDisplayString());
         }
 
         /// <summary>
