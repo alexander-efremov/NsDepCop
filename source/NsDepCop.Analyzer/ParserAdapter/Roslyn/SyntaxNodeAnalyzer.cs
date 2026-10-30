@@ -53,7 +53,7 @@ namespace Codartis.NsDepCop.ParserAdapter.Roslyn
 
         /// <summary>
         /// Determines the type referenced by the symbol represented by the syntax node and, if the node is an extension method
-        /// invocation or a call on a static import, the type declaring that method.
+        /// invocation or a reference to a statically imported method or field, the type declaring that member.
         /// Both need the symbol of the node, which is only computed once: for a method name the compiler builds its whole method group.
         /// </summary>
         private (ITypeSymbol ReferencedType, ITypeSymbol DeclaringType) DetermineReferencedTypes(SyntaxNode node, SemanticModel semanticModel)
@@ -61,7 +61,12 @@ namespace Codartis.NsDepCop.ParserAdapter.Roslyn
             SymbolInfo? symbolInfo = null;
             var referencedType = DetermineReferencedType(node, semanticModel, ref symbolInfo);
             symbolInfo ??= semanticModel.GetSymbolInfo(node);
-            var declaringType = DetermineExtensionOrStaticMethodDeclaringType(node, symbolInfo.Value.Symbol as IMethodSymbol);
+            var symbol = symbolInfo.Value.Symbol;
+            var declaringType = symbol is IFieldSymbol fieldSymbol
+                                && fieldSymbol.IsStatic
+                                && node.Parent is not MemberAccessExpressionSyntax
+                ? fieldSymbol.ContainingType
+                : DetermineExtensionOrStaticMethodDeclaringType(node, symbol as IMethodSymbol);
             return (referencedType, declaringType);
         }
 

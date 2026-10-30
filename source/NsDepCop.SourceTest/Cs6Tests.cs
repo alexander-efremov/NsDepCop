@@ -294,6 +294,15 @@ namespace Codartis.NsDepCop.SourceTest
         }
 
         [Fact]
+        public void StaticImportedFieldsDependOnDeclaringType()
+        {
+            SourceTestSpecification.Create()
+                .ExpectInvalidSegment(9, 20, 31)
+                .ExpectInvalidSegment(14, 20, 25)
+                .Execute();
+        }
+
+        [Fact]
         public void Cs6_StaticImport()
         {
             SourceTestSpecification.Create()

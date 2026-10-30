@@ -9,6 +9,12 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="StaticImportedFieldsDependOnDeclaringType\StaticImportedFieldsDependOnDeclaringType.cs" />
+    <None Include="StaticImportedFieldsDependOnDeclaringType\StaticImportedFieldsDependOnDeclaringType.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="StaticImportedFieldsDependOnDeclaringType\config.nsdepcop" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
   <!--
     Matches the analyzer's NsDepCopRoslynVersion (flows in as a global property when building a specific
     variant; empty/default means the newest). Gates the C# 14 source tests to the 5.0 build.
