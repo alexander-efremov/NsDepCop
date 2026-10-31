@@ -9,12 +9,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="StaticImportedFieldsDependOnDeclaringType\StaticImportedFieldsDependOnDeclaringType.cs" />
-    <None Include="StaticImportedFieldsDependOnDeclaringType\StaticImportedFieldsDependOnDeclaringType.cs" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="StaticImportedFieldsDependOnDeclaringType\config.nsdepcop" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
   <!--
     Matches the analyzer's NsDepCopRoslynVersion (flows in as a global property when building a specific
     variant; empty/default means the newest). Gates the C# 14 source tests to the 5.0 build.
@@ -112,6 +106,12 @@
 
     </Compile>
     <Compile Remove="Cs6_StaticImport\Cs6_StaticImport.cs">
+
+    </Compile>
+    <Compile Remove="Cs6_StaticImportedMembers\Cs6_StaticImportedMembers.cs">
+
+    </Compile>
+    <Compile Remove="Cs6_StaticImportNoDuplicateDependency\Cs6_StaticImportNoDuplicateDependency.cs">
 
     </Compile>
     <Compile Remove="Cs6_PointerType\Cs6_PointerType.cs">
@@ -244,6 +244,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Cs6_StaticImport\Cs6_StaticImport.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Cs6_StaticImportedMembers\Cs6_StaticImportedMembers.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Cs6_StaticImportNoDuplicateDependency\Cs6_StaticImportNoDuplicateDependency.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Cs6_PointerType\Cs6_PointerType.cs">
@@ -388,6 +394,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Cs6_StaticImport\config.nsdepcop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Cs6_StaticImportedMembers\config.nsdepcop">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Cs6_StaticImportNoDuplicateDependency\config.nsdepcop">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Cs6_VarWithConstructedGenericType\config.nsdepcop">
